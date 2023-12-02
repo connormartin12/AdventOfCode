@@ -1,5 +1,44 @@
 const fs = require('fs');
 
+const numbers = [
+    {
+        letters: 'one',
+        number: '1'
+    },
+    {
+        letters: 'two',
+        number: '2'
+    },
+    {
+        letters: 'three',
+        number: '3'
+    },
+    {
+        letters: 'four',
+        number: '4'
+    },
+    {
+        letters: 'five',
+        number: '5'
+    },
+    {
+        letters: 'six',
+        number: '6'
+    },
+    {
+        letters: 'seven',
+        number: '7'
+    },
+    {
+        letters: 'eight',
+        number: '8'
+    },
+    {
+        letters: 'nine',
+        number: '9'
+    },
+];
+
 fs.readFile('puzzle_input.txt', 'utf8', (error, result) => {
     if (error) {
         console.error(error);
@@ -14,13 +53,26 @@ fs.readFile('puzzle_input.txt', 'utf8', (error, result) => {
         let lastNumber = undefined;
         let haveFirstNumber = false;
         for (i = 0; i < line.length; i++) {
+            let currentNumber = undefined;
             if ((line.charCodeAt(i) >= 48) && (line.charCodeAt(i) <= 57)) {
-                if (haveFirstNumber) {
-                    lastNumber = line[i];
-                } else {
-                    firstNumber = line[i];
-                    haveFirstNumber = true;
-                }
+                currentNumber = line[i];
+            } else {
+                numbers.forEach((number) => {
+                    index = line.indexOf(number.letters, i);
+                    if (index === i) {
+                        currentNumber = number.number;
+                        return;
+                    }
+                });
+                
+            }
+
+            if (currentNumber === undefined) continue;
+            if (haveFirstNumber) {
+                lastNumber = currentNumber;
+            } else {
+                firstNumber = currentNumber;
+                haveFirstNumber = true;
             }
         }
         if (lastNumber === undefined) {

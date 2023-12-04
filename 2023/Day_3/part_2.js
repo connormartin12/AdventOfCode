@@ -6,19 +6,35 @@ fs.readFile('puzzle_input.txt', 'utf8', (error, result) => {
         return;
     }
 
-    let sum = 0;
     lines = result.split('\n');
 
-    function checkAdjacentRows (numberLength, row, column) {
-        if (column - 1 >= 0) column -= 1;
-        for (let i = 0; i <= numberLength + 1; i++) {
+    let starPositions = [];
+
+    lines.forEach((line, row) => {
+        chars = line.split("");
+        chars.forEach((char, column) => {
+            if (char.charCodeAt(0) === 42) {
+                position = [row, column, []];
+                starPositions.push(position);
+            }
+        });
+    });
+    
+    function checkAdjacentRows (number, row, column) {
+        for (let i = -1; i < number.length + 1; i++) {
+            if (column + i < 0) continue;
             if (column + i >= lines[row].length) continue;
             let char = lines[row][column + i];
             let charCode = char.charCodeAt(0);
-            if ((charCode < 46) || (charCode >= 57) || (charCode === 47))    
-                return true;
+            if (charCode === 42) {
+                starPositions.forEach(position => {
+                    if ((position[0] === row) && (position[1] === column + i)) {
+                        position[2].push(parseInt(number));
+                        return;
+                    }
+                });
+            }
         }
-        return false;
     };
 
     for (let row = 0; row < lines.length; row++) {
@@ -32,31 +48,42 @@ fs.readFile('puzzle_input.txt', 'utf8', (error, result) => {
                     number += currentRow[column + numCounter];
                     numCounter++;
                 }
+                console.log(number);
 
                 let validNumber = false;
                 if (row - 1 >= 0) {
-                    let symbol = checkAdjacentRows(number.length, row - 1, column);
-                    if ((currentRow.charCodeAt(column - 1) < 46) || currentRow.charCodeAt(column - 1) >= 57 || 
-                        currentRow.charCodeAt(column - 1) == 47)
-                        symbol = true;
-                    if (symbol) validNumber = true;
+                    checkAdjacentRows(number, row - 1, column);
+                    if (currentRow.charCodeAt(column - 1) === 42) {
+                        starPositions.forEach(position => {
+                            if ((position[0] === row) && (position[1] === column - 1)) {
+                                position[2].push(parseInt(number));
+                            }
+                        });
+                    }
                 }
                 if (((row + 1) < lines.length) && !validNumber) {
-                    let symbol = checkAdjacentRows(number.length, row + 1, column);
-                    if ((currentRow.charCodeAt(column + number.length) < 46) || currentRow.charCodeAt(column + number.length) >= 57 || 
-                        currentRow.charCodeAt(column + number.length) == 47)
-                        symbol = true;
-                    if (symbol) validNumber = true;
+                    checkAdjacentRows(number, row + 1, column);
+                    if (currentRow.charCodeAt(column + number.length) === 42) {
+                        starPositions.forEach(position => {
+                            if ((position[0] === row) && (position[1] === column + number.length)) {
+                                position[2].push(parseInt(number));
+                            }
+                        });
+                    } 
                 }
 
-                if (validNumber) {
-                    console.log(number);
-                    sum += parseInt(number);
-                }
                 column += numCounter;
             }
         }
     }
-    
+
+    let sum = 0;
+    starPositions.forEach(position => {
+        let starNumbers = position[2];
+        if (starNumbers.length === 2) {
+            sum += starNumbers[0]*starNumbers[1];
+        }
+    })
+
     console.log(sum);
 });

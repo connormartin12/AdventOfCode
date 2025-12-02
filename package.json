@@ -1,4 +1,8 @@
 {
+  "name": "advent-of-code",
+  "version": "1.0.0",
+  "description": "My Advent of Code solutions",
+  "type": "module",
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.3",
     "@types/node": "^24.10.1",

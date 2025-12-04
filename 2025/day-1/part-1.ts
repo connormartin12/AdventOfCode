@@ -26,6 +26,7 @@ const updateDialPosition = (position: number, rotation: string): number => {
   return position;
 };
 
+console.time("execution time");
 let password: number = 0;
 let dialPosition: number = 50;
 for (let i = 0; i < lines.length; i++) {
@@ -35,5 +36,6 @@ for (let i = 0; i < lines.length; i++) {
     password += 1;
   }
 }
+console.timeEnd("execution time");
 
 console.log("Password -", password);

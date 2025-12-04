@@ -1,15 +1,6 @@
 # Day 2: Gift Shop
 
-## Part 1
-
-Elves played on the gift shop computer and added invalid product IDs to the gift shop database.
-
-### Invalid IDs
-
-Invlaid IDs are any IDs that have some sequence of digits that are repeated _exactly_ twice.
-Ex. `1234` is a valid ID, but `12341234` is not since 1234 is repeated twice.
-
-### Puzzle Input
+## Puzzle Input
 
 Puzzle input comes in a single line of text that contains a list of ID ranges separated by commas. For example:
 
@@ -21,13 +12,27 @@ Puzzle input comes in a single line of text that contains a list of ID ranges se
 
 `11-22` is the first ID range and has exactly two invalid IDs: `11` and `22`.
 
-### Solution
+### Part 1
 
-For each ID range, there should be some formula that can be used to calculate the number of invalid IDs in that ID range.
+Elves played on the gift shop computer and added invalid product IDs to the gift shop database.
 
-#### What we know
+#### Invalid IDs
 
-- IDs with a length that is odd, `123` cannot have a sequence of numbers that is repeated exactly twice.
-- Each range of IDs to the tens place (10-19, 20-29, 30-39, etc...) has exactly one invalid ID where the second number equals the first number.
-- Each range of IDs to the 1000s place (1000-1099, 2000-2099, etc...) has exactly one invalid ID (1010, 2020).
-- Each range of IDs to the 100000s place (100000-100999, 200000-200999, etc...) has exactly one invalid ID (100100, 200200).
+Invlaid IDs are any IDs that have some sequence of digits that are repeated _exactly_ twice.
+Ex. `1234` is a valid ID, but `12341234` is not since 1234 is repeated twice.
+
+#### Solution
+
+An invalid ID must repeat the same sequence of digits exactly twice. If it does not, then it is valid. Therefore, the length of the ID (as a string) must be even to potentially have a sequence of digits that is repeated exactly twice.
+
+If the length is even, we can split the ID string into two halves and compare the first half to the second half. If they are the same, then the ID is invalid and we add it to the sum.
+
+### Part 2
+
+#### Invalid IDs
+
+Invalid IDs are any IDs that have some sequence of digits that are repeated _at least_ twice. Ex. `123123` is invalid and `123123123` is invalid since they both repeat the same sequence of digits at least twice.
+
+#### Solution
+
+We can divide the length of the ID evenly to ensure remainder is zero and check if all split versions are equivalent.

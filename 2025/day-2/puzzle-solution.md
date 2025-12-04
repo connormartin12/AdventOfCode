@@ -19,4 +19,15 @@ Puzzle input comes in a single line of text that contains a list of ID ranges se
 824824821-824824827,2121212118-2121212124
 ```
 
-11-22 is the first ID range and has exactly two invalid IDs: `11` and `22`.
+`11-22` is the first ID range and has exactly two invalid IDs: `11` and `22`.
+
+### Solution
+
+For each ID range, there should be some formula that can be used to calculate the number of invalid IDs in that ID range.
+
+#### What we know
+
+- IDs with a length that is odd, `123` cannot have a sequence of numbers that is repeated exactly twice.
+- Each range of IDs to the tens place (10-19, 20-29, 30-39, etc...) has exactly one invalid ID where the second number equals the first number.
+- Each range of IDs to the 1000s place (1000-1099, 2000-2099, etc...) has exactly one invalid ID (1010, 2020).
+- Each range of IDs to the 100000s place (100000-100999, 200000-200999, etc...) has exactly one invalid ID (100100, 200200).
